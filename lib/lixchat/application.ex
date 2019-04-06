@@ -10,6 +10,7 @@ defmodule Lixchat.Application do
     children = [
       # Starts a worker by calling: Lixchat.Worker.start_link(arg)
       # {Lixchat.Worker, arg},
+      Plug.Adapters.Cowboy.child_spec(scheme: :http, plug: Lixchat.Router, options: [port: 8085])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
