@@ -1,6 +1,15 @@
 # Lixchat
+## Current usage
+GET request: 
+```
+curl -v "http://localhost:8085/hello"
+```
 
-**TODO: Add description**
+POST
+```
+curl -v -H 'Content-Type: application/json' "http://localhost:8085/post" -d '{"message": "hello world" }'
+```
+
 
 ## Installation
 
