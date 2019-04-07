@@ -1,4 +1,5 @@
 # Lixchat
+- as of now this is mostly from here: https://www.jungledisk.com/blog/2018/03/19/tutorial-a-simple-http-server-in-elixir/
 ## Current usage
 GET request: 
 ```
