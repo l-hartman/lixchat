@@ -1,4 +1,4 @@
 # Client
 
 ### start
-iex --sname luke -S mix
+elixir --sname me -S mix run

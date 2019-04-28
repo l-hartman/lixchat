@@ -1,20 +1,29 @@
 defmodule Client.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
-  @moduledoc false
+    use Application
 
-  use Application
+    def start(_type, _args) do
+        {name, server_name, cookie} = get_user_info() 
+            |> connect()
+    end
+  
+    defp get_user_info() do
+        name = IO.gets("What's your name? ")
+            |> String.trim()
+        server_name = IO.gets("Connect to: ")
+            |> String.trim()
+            |> String.to_atom()
+        cookie = IO.gets("What is that servers cookie? ")
+            |> String.trim()
+            |> String.to_atom()
 
-  def start(_type, _args) do
-    # List all child processes to be supervised
-    children = [
-      # Starts a worker by calling: Client.Worker.start_link(arg)
-      # {Client.Worker, arg},
-    ]
+        {name, server_name, cookie}
+    end
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Client.Supervisor]
-    Supervisor.start_link(children, opts)
+    defp connect({name, server_name, cookie}) do
+        IO.puts("attempting connection to: #{server_name}")
+        Node.set_cookie(Node.self, :"asdf\n")
+        Node.connect(server_name)
+    end
+  
   end
-end
+  

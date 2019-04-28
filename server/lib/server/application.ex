@@ -1,21 +1,16 @@
 defmodule Server.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
-  @moduledoc false
-
-  use Application
+  # Module-based Supervisor for Server.lixserver
+  use Supervisor
 
   def start(_type, _args) do
-    # List all child processes to be supervised
+    Supervisor.start_link(__MODULE__, [])
+  end
+
+  def init([]) do
     children = [
-      # Starts a worker by calling: Server.Worker.start_link(arg)
-      # {Server.Worker, arg},
-      {server.LixServer, }
+      Server.LixServer
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Server.Supervisor]
-    Supervisor.start_link(children, opts)
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end
