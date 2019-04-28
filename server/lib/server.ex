@@ -1,6 +1,7 @@
-defmodule Lixchat do
+defmodule Server do
+  use GenServer
   @moduledoc """
-  Documentation for Lixchat.
+  Documentation for Server.
   """
 
   @doc """
@@ -8,7 +9,7 @@ defmodule Lixchat do
 
   ## Examples
 
-      iex> Lixchat.hello()
+      iex> Server.hello()
       :world
 
   """
