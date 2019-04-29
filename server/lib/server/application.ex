@@ -1,16 +1,22 @@
 defmodule Server.Application do
-  # Module-based Supervisor for Server.lixserver
-  use Supervisor
+  #use Application
 
   def start(_type, _args) do
-    Supervisor.start_link(__MODULE__, [])
+    build()
   end
 
-  def init([]) do
-    children = [
-      Server.LixServer
-    ]
-
-    Supervisor.init(children, strategy: :one_for_one)
+  defp build() do
+    IO.puts("starting server...")
+    IO.puts(Node.self())
   end
+
+  def server_loop() do
+    IO.puts("")
+    server_loop()
+  end
+  
+  def receive_message({from, message}) do
+    IO.puts("\n #{from}: #{message}")
+  end
+
 end
