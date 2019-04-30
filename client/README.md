@@ -1,4 +1,5 @@
 # Client
 
 ### start
-elixir --sname me -S mix run
+
+elixir --sname luke --cookie asdf -S mix run
