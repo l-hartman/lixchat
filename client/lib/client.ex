@@ -13,8 +13,12 @@ defmodule Client do
         end                
     end
 
-    defp handle_message({"/leave", _name}) do
+    defp handle_message({"/leave", name}) do
+        Enum.each Node.list, fn node ->
+            Client.send(node, name, "#{name} has left the chat.")
+        end
         System.halt(0)
+
     end
 
     defp handle_message({message, name}) do
