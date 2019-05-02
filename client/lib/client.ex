@@ -1,48 +1,39 @@
 defmodule Client do
 
     def client_IO({name}) do
-        message = IO.gets(">> ")
-
-        
-
-        Enum.each Node.list, fn node ->
-            send_message(node, name, message)
-        end
-
+        {IO.gets(">> ") |> String.trim(), name}
+            |> handle_message()
         client_IO({name})
     end    
 
+    defp handle_message({"/users", _name}) do
+        IO.puts(Node.self)
+        Enum.each Node.list, fn node ->
+            IO.puts(node)
+        end                
+    end
 
-    #defp send_message({name, message}) do
-    #    Enum.each Node.list, fn node ->
-    #        send_to_node(node, {name, message})
-    #    end
-    #end
-#
-    #defp send_to_node(node, {name, message}) do
-    #    pid = Node.spawn_link(node, fn -> IO.puts("hello luke") end)
-    #    #Node.spawn_link(node, Client.Application, :receive_message, [{name, message}] ) 
-    #end
+    defp handle_message({"/leave", _name}) do
+        System.halt(0)
+    end
 
-    def receive_message(from, message) do
+    defp handle_message({message, name}) do
+        Enum.each Node.list, fn node ->
+            send(node, name, message)
+        end
+    end
+
+    def receive(from, message) do
         IO.puts("\n #{from}: #{message}")
     end
 
-    def send_message(to, from, message) do
-        spawn_task(__MODULE__, :receive_message, to, [from, message])
+    def send(to, from, message) do
+        spawn_task(__MODULE__, :receive, to, [from, message])
     end
 
-
     def spawn_task(module, fun, to, args) do
-        to
-        |> remote_supervisor()
+        {Client.TaskSupervisor, to}
         |> Task.Supervisor.async(module, fun, args)
         |> Task.await()
     end
-
-    defp remote_supervisor(to) do
-        {Client.TaskSupervisor, to}
-    end
-
-
 end

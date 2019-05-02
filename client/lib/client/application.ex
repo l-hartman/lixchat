@@ -30,12 +30,20 @@ defmodule Client.Application do
         Node.set_cookie(Node.self, cookie)
         cond do 
             not String.equivalent?(server_name, "none") ->
-                IO.puts("attempting connection to #{server_name} node")
+                IO.puts("\n     attempting connection to #{server_name}.")
                 String.to_atom(server_name)
                     |> Node.connect()
+                IO.puts("\n     successful connection. Happy messaging!")
+                greet_nodes(name)
             true -> "no server to connect to... wait for others."
         end
         {name}
+    end
+
+    defp greet_nodes(name) do
+        Enum.each Node.list, fn node ->
+            Client.send(node, name, "#{name} has joined the chat. Say hi!")
+        end
     end
   end
   
